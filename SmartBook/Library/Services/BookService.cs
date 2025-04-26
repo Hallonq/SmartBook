@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using static SmartBook.Library.Book;
 
@@ -10,8 +11,8 @@ namespace SmartBook.Library.Services
 {
     internal class BookService
     {
+        private readonly string FilePath = $@"{Environment.CurrentDirectory}/library.json";
         public Library Library { get; set; }
-        private Book LastSearchedBook { get; set; }
         public BookService()
         {
             Library ??= new Library();
@@ -26,9 +27,7 @@ namespace SmartBook.Library.Services
         }
         public Book GetBook(string searchInput)
         {
-            Book result = Library.Books.Where(x => x.Title.Contains(searchInput) || x.Author.Contains(searchInput)).SingleOrDefault()!;
-            LastSearchedBook = result;
-            return result;
+            return Library.Books.Where(x => x.Title.Contains(searchInput) || x.Author.Contains(searchInput)).FirstOrDefault()!;
         }
         public string GetCategory(int id)
         {
@@ -36,19 +35,37 @@ namespace SmartBook.Library.Services
         }
         public string GetAvailability(bool status)
         {
-            return Enum.GetName(typeof(AvailabilityType), status)!;
+            return Enum.GetName(typeof(AvailabilityType), status ? 1 : 0)!;
         }
-        public void SetAvailability(bool status)
+        public void SetAvailability(Book book)
         {
-            LastSearchedBook.Availability = status;
+            Library.Books.Where(x => book == x).SingleOrDefault()!.Availability = !book.Availability;
         }
         public bool DeleteBook(string titleOrIsbn)
         {
-            if (Library.Books.Remove(Library.Books.FirstOrDefault(x => x.Title == titleOrIsbn || x.Isbn == int.Parse(titleOrIsbn))!))
+            if (Library.Books.RemoveAll(x => x.Title.Equals(titleOrIsbn, StringComparison.CurrentCultureIgnoreCase) || x.Isbn.ToString() == titleOrIsbn) > 0)
             {
                 return true;
             }
             return false;
+        }
+        public string SaveAsJson()
+        {
+            return JsonSerializer.Serialize(Library);
+        }
+        public void LoadJson(string data)
+        {
+            Library = JsonSerializer.Deserialize<Library>(data)!;
+        }
+        public void WriteToFile(string data)
+        {
+            using StreamWriter sw = File.CreateText(FilePath);
+            sw.WriteLine(data);
+        }
+        public string ReadFromFile()
+        {
+            using StreamReader sr = File.OpenText(FilePath);
+            return sr.ReadToEnd();
         }
     }
 }

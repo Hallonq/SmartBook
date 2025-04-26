@@ -55,7 +55,7 @@ namespace SmartBook
                                 Author = author,
                                 Isbn = isbn,
                                 Category = category,
-                                
+
                             });
                         }
                         catch (Exception e)
@@ -76,7 +76,7 @@ namespace SmartBook
                             {
                                 Console.WriteLine("No changes made");
                             }
-                            Console.ReadKey();
+                            MenuSupport();
                         }
                         catch (Exception e)
                         {
@@ -90,7 +90,7 @@ namespace SmartBook
                             {
                                 BookInfo(book, bs);
                             }
-                            Console.ReadKey();
+                            MenuSupport();
                         }
                         catch (Exception e)
                         {
@@ -101,11 +101,15 @@ namespace SmartBook
                     case '4': // search book
                         try
                         {
-                            Console.WriteLine("Search...");
+                            Console.WriteLine("Search on title or author");
                             string searchBookInput = Console.ReadLine()!;
+                            if (string.IsNullOrEmpty(searchBookInput))
+                            {
+                                Console.WriteLine("Search input cannot be empty");
+                            }
                             Book searchedBook = bs.GetBook(searchBookInput);
                             BookInfo(searchedBook, bs);
-                            Console.ReadKey();
+                            MenuSupport();
                         }
                         catch (Exception e)
                         {
@@ -113,14 +117,55 @@ namespace SmartBook
                         }
                         break;
                     case '5': // mark enum "rented" or "available"
-                        Console.WriteLine("Set last searched book rent status");
-                        int temp = int.Parse(Console.ReadLine()!);
-                        bool availableInput = Convert.ToBoolean(temp);
-                        bs.SetAvailability(availableInput); // book marked cw
+                        try
+                        {
+                            Console.WriteLine("Change book availability status, write isbn of book");
+                            foreach (Book book in bs.GetBooks())
+                            {
+                                BookInfo(book, bs);
+                            }
+                            if (int.TryParse(Console.ReadLine()!, out int isbn))
+                            {
+                                Book book = bs.Library.Books.Where(x => x.Isbn == isbn).SingleOrDefault()!;
+                                bs.SetAvailability(book);
+                                Console.WriteLine($"Book: {book.Title} availability status changed to {bs.GetAvailability(book.Availability)}");
+                                MenuSupport();
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid input");
+                                break;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
                         break;
 
-
-                        // save library as json and load library from json
+                    case '6': // save library as json and load library from json
+                        Console.WriteLine("writing tojson...");
+                        try
+                        {
+                            bs.WriteToFile(bs.SaveAsJson());
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
+                    case '7':
+                        Console.WriteLine("reading from json...");
+                        try
+                        {
+                            bs.LoadJson(bs.ReadFromFile());
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                        break;
                 }
             }
             while (!exit);
@@ -133,6 +178,12 @@ namespace SmartBook
             Console.WriteLine($"ISBN: {book.Isbn}");
             Console.WriteLine($"Category: {bs.GetCategory(book.Category)}");
             Console.WriteLine($"Availability: {bs.GetAvailability(book.Availability)}\n");
+        }
+
+        private static void MenuSupport()
+        {
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadKey();
         }
     }
 }

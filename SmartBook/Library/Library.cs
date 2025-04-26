@@ -8,10 +8,18 @@ namespace SmartBook.Library
 {
     internal class Library
     {
-        public List<Book> Books { get; set; }
+        private List<Book> books;
+        public List<Book> Books
+        {
+            get { return books; }
+            set
+            {
+                books = value;
+            }
+        }
         public Library()
         {
-            Books = [];
+            books = [];
         }
     }
 }

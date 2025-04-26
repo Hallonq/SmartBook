@@ -8,34 +8,34 @@ namespace SmartBook.Library
 {
     internal class Book
     {
-        private string _title;
-        private string _author;
-        private int _isbn;
-        private int _category;
-        private bool _availability;
+        private string title;
+        private string author;
+        private int isbn;
+        private int category;
+        private bool availability = false;
         public string Title
         {
-            get { return _title; }
-            set { _title = value; }
+            get { return title; }
+            set { title = value; }
         }
         public string Author
         {
-            get { return _author; }
-            set { _author = value; }
+            get { return author; }
+            set { author = value; }
         }
         public int Isbn
         {
-            get { return _isbn; }
+            get { return isbn; }
             set
             {
                 if (value > 0)
-                    _isbn = value;
+                    isbn = value;
             }
         }
         public int Category
         {
-            get { return _category; }
-            set { _category = value; }
+            get { return category; }
+            set { category = value; }
         }
         public enum CategoryType
         {
@@ -47,8 +47,8 @@ namespace SmartBook.Library
         }
         public bool Availability
         {
-            get { return _availability; }
-            set { _availability = value = true ? _availability = true : _availability = false; }
+            get { return availability; }
+            set { availability = value; }
         }
         public enum AvailabilityType
         {
@@ -57,8 +57,8 @@ namespace SmartBook.Library
         }
         public Book()
         {
-            _title = string.Empty;
-            _author = string.Empty;
+            title = string.Empty;
+            author = string.Empty;
         }
     }
 }
