@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmartBook.Library
 {
-    internal class Book
+    public class Book
     {
         private string title;
         private string author;
@@ -16,26 +16,42 @@ namespace SmartBook.Library
         public string Title
         {
             get { return title; }
-            set { title = value; }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new Exception("title cannot be empty or null");
+                title = value;
+            }
         }
         public string Author
         {
             get { return author; }
-            set { author = value; }
+            set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new Exception("author cannot be empty or null");
+                author = value;
+            }
         }
         public int Isbn
         {
             get { return isbn; }
             set
             {
-                if (value > 0)
-                    isbn = value;
+                if (value < 0)
+                    throw new Exception("ISBN must be a positive number.");
+
+                isbn = value;
             }
         }
         public int Category
         {
             get { return category; }
-            set { category = value; }
+            set
+            {
+                if (!Enum.IsDefined(typeof(CategoryType), value))
+                    throw new Exception("Invalid category.");
+            }
         }
         public enum CategoryType
         {

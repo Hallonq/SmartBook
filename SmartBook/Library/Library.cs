@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmartBook.Library
 {
-    internal class Library
+    public class Library
     {
         private List<Book> books;
         public List<Book> Books

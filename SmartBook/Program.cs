@@ -155,7 +155,7 @@ namespace SmartBook
                             Console.WriteLine(e.Message);
                         }
                         break;
-                    case '7':
+                    case '7': // read library from json
                         Console.WriteLine("reading from json...");
                         try
                         {

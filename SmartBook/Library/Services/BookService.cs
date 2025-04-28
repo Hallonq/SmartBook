@@ -9,7 +9,7 @@ using static SmartBook.Library.Book;
 
 namespace SmartBook.Library.Services
 {
-    internal class BookService
+    public class BookService
     {
         private readonly string FilePath = $@"{Environment.CurrentDirectory}/library.json";
         public Library Library { get; set; }
