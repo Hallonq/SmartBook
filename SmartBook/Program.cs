@@ -61,6 +61,7 @@ namespace SmartBook
                         {
                             Console.WriteLine(e.Message);
                         }
+                        MenuSupport();
                         break;
                     case '2': // remove book
                         try
