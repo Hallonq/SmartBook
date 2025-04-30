@@ -53,7 +53,7 @@ namespace SmartBook
                             {
                                 Title = title,
                                 Author = author,
-                                Isbn = ValidateIsbn(isbn),
+                                Isbn = bs.ValidateIsbn(isbn),
                                 Category = category,
                             });
                         }
