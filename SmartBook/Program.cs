@@ -53,9 +53,8 @@ namespace SmartBook
                             {
                                 Title = title,
                                 Author = author,
-                                Isbn = isbn,
+                                Isbn = ValidateIsbn(isbn),
                                 Category = category,
-
                             });
                         }
                         catch (Exception e)
@@ -170,7 +169,6 @@ namespace SmartBook
             }
             while (!exit);
         }
-
         private static void BookInfo(Book book, BookService bs)
         {
             Console.WriteLine($"Title: {book.Title}");
@@ -179,7 +177,6 @@ namespace SmartBook
             Console.WriteLine($"Category: {bs.GetCategory(book.Category)}");
             Console.WriteLine($"Availability: {bs.GetAvailability(book.Availability)}\n");
         }
-
         private static void MenuSupport()
         {
             Console.WriteLine("Press any key to continue...");

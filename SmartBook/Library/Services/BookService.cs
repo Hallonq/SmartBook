@@ -49,6 +49,14 @@ namespace SmartBook.Library.Services
             }
             return false;
         }
+        public int ValidateIsbn(int isbn)
+        {
+            if (Library.Books.Any(x => x.Isbn == isbn))
+            {
+                throw new Exception("ISBN already exists.");
+            }
+            return isbn;
+        }
         public string SaveAsJson()
         {
             return JsonSerializer.Serialize(Library);
