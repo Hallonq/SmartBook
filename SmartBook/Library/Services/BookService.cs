@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using static SmartBook.Library.Book;
 
@@ -21,10 +22,7 @@ namespace SmartBook.Library.Services
         {
             Library.Books.Add(book);
         }
-        public List<Book> GetBooks()
-        {
-            return Library.Books.OrderBy(x => x.Title).ToList();
-        }
+        public List<Book> GetBooks() => Library.Books.OrderBy(x => x.Title).ToList();
         public Book GetBook(string searchInput)
         {
             return Library.Books.Where(x => x.Title.Contains(searchInput) || x.Author.Contains(searchInput)).FirstOrDefault()!;

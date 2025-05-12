@@ -38,7 +38,7 @@ namespace SmartBook.Library
             get { return isbn; }
             set
             {
-                if (value < 0)
+                if (value <= 0)
                     throw new Exception("ISBN must be a positive number.");
 
                 isbn = value;
@@ -51,6 +51,8 @@ namespace SmartBook.Library
             {
                 if (!Enum.IsDefined(typeof(CategoryType), value))
                     throw new Exception("Invalid category.");
+
+                category = value; // behövs??? funkade utan
             }
         }
         public enum CategoryType

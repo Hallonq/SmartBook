@@ -145,7 +145,7 @@ namespace SmartBook
                         break;
 
                     case '6': // save library as json and load library from json
-                        Console.WriteLine("writing tojson...");
+                        Console.WriteLine("writing to json...");
                         try
                         {
                             bs.WriteToFile(bs.SaveAsJson());
